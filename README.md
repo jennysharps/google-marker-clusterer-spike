@@ -2,7 +2,7 @@
 
 ## Local dev
 
-Prerequisites: (`Node.js`)[https://docs.npmjs.com/downloading-and-installing-node-js-and-npm]
+Prerequisites: [Node.js](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
 Run `make` to install dependencies
 
