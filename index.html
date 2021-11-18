@@ -61,9 +61,19 @@
     ></script>
     <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
     <script>
-      const dummyDescription = (name) => `Dummy description for ${name}`;
-      const offCanvasContent = document.querySelector("#offCanvasContent");
+      const contentTemplate = document.querySelector("#offCanvasContent");
       const offCanvasEl = document.getElementById("offcanvas");
+
+      const showDetailsOverlay = (title, description) => {
+        const offCanvasContent = contentTemplate.content.cloneNode(true);
+        offCanvasContent.querySelector(".offcanvas-title").innerText = title;
+        offCanvasContent.querySelector(".offcanvas-body").innerText =
+          description;
+        offCanvasEl.innerHTML = "";
+        offCanvasEl.appendChild(offCanvasContent);
+        const bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
+        bsOffcanvas.show();
+      };
 
       const locations = [
         {
@@ -102,7 +112,7 @@
             "Daniel's project focused on reducing teenage pregnancies. Four girls in the team fell pregnant in the first year, but this number fell to zero in the second year of the project thanks to the support they received from Daniel and their focus on playing as part of the team.",
         },
         {
-          location: { lat: -46.89754, lng: -49.161656011 },
+          location: { lat: -25.4950501, lng: -49.4298839 },
           projectName: "Huracan FC Brasil",
           locationName: "Curitiba",
           description:
@@ -129,7 +139,7 @@
             "Miggy was using football to focuus on improvind discipline and the boys attitude at his school in Manila",
         },
         {
-          location: { lat: 24.6912, lng: 78.4138 },
+          location: { lat: 27.6574644, lng: 85.2881324 },
           projectName: "Huracan FC Nepal (1)",
           locationName: "Simle, Lalitpur",
           description:
@@ -214,9 +224,8 @@
           locationName: "Northolt, W London",
           description: "",
         },
-
         {
-          location: { lat: 42.4613650708, lng: -71.4890885353 },
+          location: { lat: 27.5266879, lng: 91.6902546 },
           projectName: "Huracan FC Jhamtse India",
           locationName: "Tawang, Arunachal Pradesh",
           description: "",
@@ -254,7 +263,7 @@
           ({ location, projectName, locationName, description }, i) => {
             const marker = new google.maps.Marker({
               position: location,
-              label: labels[i % labels.length],
+              //   label: labels[i % labels.length],
               // icon: {
               //   url: `data:image/svg+xml;base64,${svg}`,
               //   scaledSize: new google.maps.Size(45, 45),
@@ -265,17 +274,8 @@
               title: locationName || projectName,
             });
 
-            google.maps.event.addListener(marker, "click", function (e) {
-              console.log({ e, marker });
-
-              var clone = offCanvasContent.content.cloneNode(true);
-              clone.querySelector(".offcanvas-title").innerText =
-                projectName || locationName;
-              clone.querySelector(".offcanvas-body").innerText = description;
-              offCanvasEl.innerHTML = "";
-              offCanvasEl.appendChild(clone);
-              const bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
-              bsOffcanvas.show();
+            google.maps.event.addListener(marker, "click", () => {
+              showDetailsOverlay(projectName || locationName, description);
             });
 
             return marker;
