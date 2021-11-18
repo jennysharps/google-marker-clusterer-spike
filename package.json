@@ -1,0 +1,27 @@
+{
+  "name": "google-marker-clusterer-spike",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": ">=12"
+  },
+  "scripts": {
+    "serve": "http-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jennysharps/google-marker-clusterer-spike.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jennysharps/google-marker-clusterer-spike/issues"
+  },
+  "homepage": "https://github.com/jennysharps/google-marker-clusterer-spike#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "http-server": "^14.0.0"
+  }
+}
