@@ -5,3 +5,7 @@ default:
 .phony: local
 local:
 	npm run serve
+
+.phony: refresh-data
+refresh-data:
+	node ./cli/updateLocations
