@@ -416,7 +416,8 @@
             });
 
             google.maps.event.addListener(marker, "click", () => {
-              map.panTo(marker.getPosition());
+              // TODO: fix where this pans to based on overlay width
+              // map.panTo(marker.getPosition());
               showDetailsOverlay(
                 projectName || locationName,
                 description,
