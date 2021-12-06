@@ -17,29 +17,33 @@
       <div class="offcanvas-body"></div>
     </template>
 
-    <main>
-      <h1>Huracan Google Maps Spike</h1>
-      <div class="map-wrapper">
-        <div
-          class="offcanvas offcanvas-start"
-          id="offcanvas"
-          data-bs-backdrop="false"
-          tabindex="-1"
-          aria-labelledby="offcanvasLabel"
-        ></div>
-        <div id="map"></div>
-      </div>
+    <main class="map-wrapper">
+      <div
+        class="offcanvas offcanvas-start"
+        id="offcanvas"
+        data-bs-backdrop="false"
+        tabindex="-1"
+        aria-labelledby="offcanvasLabel"
+      ></div>
+      <div id="map"></div>
     </main>
 
     <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
       .map-wrapper {
         position: relative;
         overflow: hidden;
+        width: 100%;
+        height: 100%;
         /* box-shadow: 5px 10px #888888; */
       }
       #map {
-        width: 100% !important;
-        height: 600px !important;
+        width: 100%;
+        height: 100%;
         z-index: 1;
       }
       #offcanvas {
