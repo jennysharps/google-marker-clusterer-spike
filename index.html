@@ -440,6 +440,8 @@
         const map = new google.maps.Map(document.getElementById("map"), {
           zoom: 2,
           center: { lat: 10, lng: -8 },
+          mapTypeControl: false,
+          streetViewControl: false,
         });
 
         new markerClusterer.MarkerClusterer({ map, markers: getMarkers(map) });
