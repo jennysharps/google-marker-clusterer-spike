@@ -87,26 +87,98 @@
       const offCanvasEl = document.getElementById("offcanvas");
       let visibleMarker = null;
       let bounds;
+      let animationTimeout;
+
+      const clusterSVG = window.btoa(`
+        <svg fill="#ED1C24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+          <circle cx="120" cy="120" opacity=".8" r="70" />
+          <circle cx="120" cy="120" opacity=".4" r="90" />
+          <circle cx="120" cy="120" opacity=".2" r="110" />
+        </svg>`);
+
+      const markerSVG = (projectType, selected) => {
+        const { fillColor, fillOpacity, strokeOpacity } =
+          projectTypeIconProps[projectType];
+
+        return window.btoa(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        ${
+          selected
+            ? `<circle fill="white" cx="12" cy="12" opacity=".7" r="12" />`
+            : ""
+        }
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="${fillColor}" fill-opacity="${fillOpacity}" stroke="white" stroke-width="0.5" />
+      </svg>`);
+      };
+
+      const projectTypeIconProps = {
+        NEW: {},
+        PAST: {
+          fillColor: "#006A6E",
+        },
+        ONGOING: {
+          fillColor: "#ed1c24",
+        },
+      };
+
+      const iconProps = (projectType) => {
+        return {
+          url: `data:image/svg+xml;base64,${markerSVG(projectType, false)}`,
+          // scaledSize: new google.maps.Size(40, 40),
+          scaledSize: new google.maps.Size(45, 45),
+        };
+      };
+
+      const selectedIconProps = (projectType) => {
+        return {
+          url: `data:image/svg+xml;base64,${markerSVG(projectType, true)}`,
+          // scaledSize: new google.maps.Size(40, 40),
+          scaledSize: new google.maps.Size(45, 45),
+        };
+      };
+
+      const unselectMarker = (marker) => {
+        if (!marker) {
+          return;
+        }
+
+        if (animationTimeout) {
+          clearTimeout(animationTimeout);
+        }
+
+        marker.setIcon(iconProps(marker.projectType));
+      };
 
       offCanvasEl.addEventListener("hide.bs.offcanvas", function () {
-        if (visibleMarker && visibleMarker.getAnimation() !== null) {
-          visibleMarker && visibleMarker.setAnimation(null);
-        }
+        unselectMarker(visibleMarker);
       });
 
-      const showDetailsOverlay = (title, description, projectType, marker) => {
-        visibleMarker && visibleMarker.setAnimation(null);
+      const showDetailsOverlay = (marker) => {
+        const { projectName, locationName, description, projectType } = marker;
+        unselectMarker(visibleMarker);
         visibleMarker = marker;
+
         const offCanvasContent = contentTemplate.content.cloneNode(true);
-        offCanvasContent.querySelector(".offcanvas-title").innerText = title;
+        offCanvasContent.querySelector(".offcanvas-title").innerText =
+          projectName || locationName;
         offCanvasContent.querySelector(
           ".offcanvas-body"
         ).innerHTML = `<p>${description}</p>`;
         offCanvasEl.innerHTML = "";
         offCanvasEl.appendChild(offCanvasContent);
+
+        // Initialize the off canvas overlay
         const bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
         bsOffcanvas.show();
+
         visibleMarker.setAnimation(google.maps.Animation.BOUNCE);
+        animationTimeout = setTimeout(() => {
+          visibleMarker.setAnimation(google.maps.Animation.NULL);
+          marker.setZIndez(undefined);
+        }, 1000);
+
+        marker.setZIndex(Number(google.maps.Marker.MAX_ZINDEX) + 1000);
+        marker.setIcon(selectedIconProps(projectType));
       };
 
       document.addEventListener("click", (evt) => {
@@ -133,7 +205,7 @@
             if (title) {
               return;
             }
-            // Click on something other than a marker; continue traveersing;
+            // Click on something other than a marker; continue traversing;
           }
           // Go up the DOM
           targetElement = targetElement.parentNode;
@@ -444,17 +516,6 @@
         },
       ];
 
-      const MAP_MARKER =
-        "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z";
-
-      const iconProps = {
-        NEW: {},
-        PAST: {
-          fillColor: "#006A6E",
-        },
-        ONGOING: { fillColor: "#ED1C24" },
-      };
-
       const getMarkers = (map) => {
         const markers = [];
         locations.forEach(
@@ -471,18 +532,14 @@
 
             const marker = new google.maps.Marker({
               position: location,
-              icon: {
-                path: MAP_MARKER,
-                fillOpacity: 0.9,
-                strokeWeight: 0,
-                rotation: 0,
-                scale: 1.75,
-                anchor: new google.maps.Point(15, 30),
-                shouldFocus: true,
-                ...iconProps[projectType],
-              },
+              icon: iconProps(projectType),
               title: locationName || projectName,
               animation: google.maps.Animation.DROP,
+              optimized: false,
+              projectName,
+              locationName,
+              description,
+              projectType,
             });
 
             google.maps.event.addListener(marker, "click", () => {
@@ -493,12 +550,7 @@
               // Center and then offset by half of overlay width
               map.panTo(marker.getPosition());
               map.panBy(-offCanvasWidth / 2, 0);
-              showDetailsOverlay(
-                projectName || locationName,
-                description,
-                projectType,
-                marker
-              );
+              showDetailsOverlay(marker);
             });
 
             markers.push(marker);
@@ -517,7 +569,28 @@
           gestureHandling: "greedy",
         });
 
-        new markerClusterer.MarkerClusterer({ map, markers: getMarkers(map) });
+        new markerClusterer.MarkerClusterer({
+          map,
+          markers: getMarkers(map),
+          renderer: {
+            render: function ({ count, position }, stats) {
+              return new google.maps.Marker({
+                position,
+                icon: {
+                  url: `data:image/svg+xml;base64,${clusterSVG}`,
+                  scaledSize: new google.maps.Size(45, 45),
+                },
+                label: {
+                  text: String(count),
+                  color: "white",
+                  fontSize: "12px",
+                },
+                // adjust zIndex to be above other markers
+                zIndex: Number(google.maps.Marker.MAX_ZINDEX) + count,
+              });
+            },
+          },
+        });
       }
     </script>
 
