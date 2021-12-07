@@ -146,14 +146,20 @@
         };
       };
 
+      const cancelAnimation = () => {
+        if (animationTimeout) {
+          clearTimeout(animationTimeout);
+          visibleMarker.setAnimation(google.maps.Animation.NULL);
+          visibleMarker.setZIndex(undefined);
+        }
+      };
+
       const unselectMarker = (marker) => {
         if (!marker) {
           return;
         }
 
-        if (animationTimeout) {
-          clearTimeout(animationTimeout);
-        }
+        cancelAnimation();
 
         marker.setIcon(iconProps(marker.projectType));
       };
@@ -163,6 +169,7 @@
       });
 
       const showDetailsOverlay = (marker) => {
+        cancelAnimation();
         const { projectName, locationName, description, projectType } = marker;
         unselectMarker(visibleMarker);
         visibleMarker = marker;
@@ -182,9 +189,8 @@
 
         visibleMarker.setAnimation(google.maps.Animation.BOUNCE);
         animationTimeout = setTimeout(() => {
-          visibleMarker.setAnimation(google.maps.Animation.NULL);
-          marker.setZIndez(undefined);
-        }, 500);
+          cancelAnimation();
+        }, 750);
 
         marker.setZIndex(Number(google.maps.Marker.MAX_ZINDEX) + 1000);
         marker.setIcon(selectedIconProps(projectType));
