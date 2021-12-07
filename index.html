@@ -55,6 +55,7 @@
         position: absolute;
         background-color: #fafafa;
         box-shadow: 0 0 6px rgb(0 0 0 / 30%);
+        max-width: 60%;
       }
       .offcanvas-header {
         color: #fff;
@@ -84,8 +85,18 @@
     <script>
       const contentTemplate = document.querySelector("#offCanvasContent");
       const offCanvasEl = document.getElementById("offcanvas");
+      let visibleMarker = null;
+      let bounds;
 
-      const showDetailsOverlay = (title, description, projectType) => {
+      offCanvasEl.addEventListener("hide.bs.offcanvas", function () {
+        if (visibleMarker && visibleMarker.getAnimation() !== null) {
+          visibleMarker && visibleMarker.setAnimation(null);
+        }
+      });
+
+      const showDetailsOverlay = (title, description, projectType, marker) => {
+        visibleMarker && visibleMarker.setAnimation(null);
+        visibleMarker = marker;
         const offCanvasContent = contentTemplate.content.cloneNode(true);
         offCanvasContent.querySelector(".offcanvas-title").innerText = title;
         offCanvasContent.querySelector(
@@ -95,7 +106,42 @@
         offCanvasEl.appendChild(offCanvasContent);
         const bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
         bsOffcanvas.show();
+        visibleMarker.setAnimation(google.maps.Animation.BOUNCE);
       };
+
+      document.addEventListener("click", (evt) => {
+        const instance = bootstrap.Offcanvas.getInstance(offCanvasEl);
+
+        if (!instance) {
+          return;
+        }
+        let targetElement = evt.target; // clicked element
+
+        do {
+          if (targetElement === offCanvasEl) {
+            // This is a click inside. Do nothing, just return.
+            return;
+          }
+
+          // Click on google map image (marker, marker cluster icon, etc)
+          const src =
+            targetElement.getAttribute && targetElement.getAttribute("src");
+          if (src === "https://maps.gstatic.com/mapfiles/transparent.png") {
+            const title = targetElement.parentNode.getAttribute("title");
+
+            // Click on marker. Do nothing, just return.
+            if (title) {
+              return;
+            }
+            // Click on something other than a marker; continue traveersing;
+          }
+          // Go up the DOM
+          targetElement = targetElement.parentNode;
+        } while (targetElement);
+
+        // This is a click outside.
+        bootstrap.Offcanvas.getInstance(offCanvasEl).hide();
+      });
 
       const locations = [
         {
@@ -432,18 +478,26 @@
                 rotation: 0,
                 scale: 1.75,
                 anchor: new google.maps.Point(15, 30),
+                shouldFocus: true,
                 ...iconProps[projectType],
               },
               title: locationName || projectName,
+              animation: google.maps.Animation.DROP,
             });
 
             google.maps.event.addListener(marker, "click", () => {
-              // TODO: fix where this pans to based on overlay width
-              // map.panTo(marker.getPosition());
+              const offCanvasWidth = offCanvasEl
+                ? offCanvasEl.offsetWidth
+                : null;
+
+              // Center and then offset by half of overlay width
+              map.panTo(marker.getPosition());
+              map.panBy(-offCanvasWidth / 2, 0);
               showDetailsOverlay(
                 projectName || locationName,
                 description,
-                projectType
+                projectType,
+                marker
               );
             });
 
