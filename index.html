@@ -101,13 +101,24 @@
           projectTypeIconProps[projectType];
 
         return window.btoa(`
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34">
+        <defs>
+          <style type="text/css"><![CDATA[
+            .shadow {
+              -webkit-filter: drop-shadow(1px 1px 0.75px rgb(0 0 0 / 0.15));
+              filter: drop-shadow(1px 1px 0.75px rgb(0 0 0 / 0.15));
+            }
+          ]]></style>
+        </defs>
         ${
           selected
-            ? `<circle fill="white" cx="12" cy="12" opacity=".7" r="12" />`
+            ? `<circle class="shadow" fill="white" cx="16" cy="17" opacity=".7" r="15" />`
             : ""
         }
-        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="${fillColor}" fill-opacity="${fillOpacity}" stroke="white" stroke-width="0.5" />
+        <svg x="4" y="5">
+          <path class="shadow" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="${fillColor}" fill-opacity="1" stroke="white" stroke-width="0.5" />
+        </svg>
+        <circle fill="white" cx="16" cy="14" opacity="1" r="2.5" />
       </svg>`);
       };
 
@@ -124,16 +135,14 @@
       const iconProps = (projectType) => {
         return {
           url: `data:image/svg+xml;base64,${markerSVG(projectType, false)}`,
-          // scaledSize: new google.maps.Size(40, 40),
-          scaledSize: new google.maps.Size(45, 45),
+          scaledSize: new google.maps.Size(52, 52),
         };
       };
 
       const selectedIconProps = (projectType) => {
         return {
           url: `data:image/svg+xml;base64,${markerSVG(projectType, true)}`,
-          // scaledSize: new google.maps.Size(40, 40),
-          scaledSize: new google.maps.Size(45, 45),
+          scaledSize: new google.maps.Size(52, 52),
         };
       };
 
