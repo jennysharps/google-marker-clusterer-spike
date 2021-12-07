@@ -150,7 +150,6 @@
         if (animationTimeout) {
           clearTimeout(animationTimeout);
           visibleMarker.setAnimation(google.maps.Animation.NULL);
-          visibleMarker.setZIndex(undefined);
         }
       };
 
@@ -162,6 +161,7 @@
         cancelAnimation();
 
         marker.setIcon(iconProps(marker.projectType));
+        marker.setZIndex(undefined);
       };
 
       offCanvasEl.addEventListener("hide.bs.offcanvas", function () {
@@ -533,6 +533,8 @@
 
       const getMarkers = (map) => {
         const markers = [];
+        const bounds = new google.maps.LatLngBounds();
+
         locations.forEach(
           ({
             location,
@@ -557,6 +559,8 @@
               projectType,
             });
 
+            bounds.extend(location);
+
             google.maps.event.addListener(marker, "click", () => {
               const offCanvasWidth = offCanvasEl
                 ? offCanvasEl.offsetWidth
@@ -572,7 +576,7 @@
           }
         );
 
-        return markers;
+        return { markers, bounds };
       };
 
       function initMap() {
@@ -584,9 +588,11 @@
           gestureHandling: "greedy",
         });
 
+        const { markers, bounds } = getMarkers(map);
+
         new markerClusterer.MarkerClusterer({
           map,
-          markers: getMarkers(map),
+          markers,
           renderer: {
             render: function ({ count, position }, stats) {
               return new google.maps.Marker({
@@ -606,6 +612,8 @@
             },
           },
         });
+
+        map.fitBounds(bounds);
       }
     </script>
 
