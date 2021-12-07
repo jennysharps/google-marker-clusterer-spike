@@ -184,7 +184,7 @@
         animationTimeout = setTimeout(() => {
           visibleMarker.setAnimation(google.maps.Animation.NULL);
           marker.setZIndez(undefined);
-        }, 1000);
+        }, 500);
 
         marker.setZIndex(Number(google.maps.Marker.MAX_ZINDEX) + 1000);
         marker.setIcon(selectedIconProps(projectType));
