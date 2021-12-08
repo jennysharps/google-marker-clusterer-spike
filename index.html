@@ -91,12 +91,11 @@
       .legend-item {
         display: flex;
         margin: 5px 0;
+        align-items: center;
       }
-      .legend-item-key {
-        width: 16px;
-        height: 14px;
-        border: 1px solid;
-        margin-right: 4px;
+      .legend-item-icon {
+        width: 28px;
+        margin: -2px -2px -2px -5px;
       }
     </style>
     <script
@@ -657,11 +656,11 @@
             return;
           }
 
-          const { url: icon } = iconProps(projectType, false);
+          const { url } = iconProps(projectType, false);
           const div = document.createElement("div");
           div.className = "legend-item";
 
-          div.innerHTML = `<i class="legend-item-key" style="background-color: ${fillColor}"></i>${label}`;
+          div.innerHTML = `<img class="legend-item-icon" src="${url}"/>${label}`;
           legend.appendChild(div);
         });
 
