@@ -47,7 +47,6 @@
         overflow: hidden;
         width: 100%;
         height: 100%;
-        /* box-shadow: 5px 10px #888888; */
       }
       #map {
         width: 100%;
@@ -68,6 +67,18 @@
       .btn-close {
         opacity: 0.9;
       }
+      .metadata-item {
+        display: flex;
+        flex-direction: column;
+        margin: 14px 0;
+      }
+      .metadata-item > * {
+        margin-top: 2px;
+      }
+      .metadata-item label {
+        font-size: 12px;
+        color: rgba(85, 86, 90, 0.7);
+      }
       .offcanvas-title {
         margin: 6px 0;
       }
@@ -75,7 +86,8 @@
         font-size: 14px;
         padding: 10px 24px 20px;
       }
-      .offcanvas-body p {
+      .offcanvas-body p,
+      .metadata {
         margin: 16px 0 26px;
       }
       .legend {
@@ -106,7 +118,7 @@
     <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
     <script>
       const contentTemplate = document.querySelector("#offCanvasContent");
-      const offCanvasEl = document.getElementById("offcanvas");
+      const offCanvasNode = document.getElementById("offcanvas");
       let visibleMarker = null;
       let bounds;
       let animationTimeout;
@@ -205,24 +217,59 @@
         marker.setZIndex(undefined);
       };
 
-      offCanvasEl.addEventListener("hide.bs.offcanvas", function () {
+      offCanvasNode.addEventListener("hide.bs.offcanvas", function () {
         unselectMarker(visibleMarker);
       });
 
       const showDetailsOverlay = (marker) => {
         cancelAnimation();
-        const { projectName, locationName, description, markerType } = marker;
+        const {
+          projectName,
+          locationName,
+          description,
+          markerType,
+          numberOfChildren,
+        } = marker;
         unselectMarker(visibleMarker);
         visibleMarker = marker;
 
-        const offCanvasContent = contentTemplate.content.cloneNode(true);
-        offCanvasContent.querySelector(".offcanvas-title").innerText =
+        const offCanvasContentNode = contentTemplate.content.cloneNode(true);
+        offCanvasContentNode.querySelector(".offcanvas-title").innerText =
           projectName || locationName;
-        offCanvasContent.querySelector(
-          ".offcanvas-body"
-        ).innerHTML = `<p>${description}</p>`;
-        offCanvasEl.innerHTML = "";
-        offCanvasEl.appendChild(offCanvasContent);
+        const bodyNode = offCanvasContentNode.querySelector(".offcanvas-body");
+
+        const sections = [
+          {
+            label: "description",
+            value: description,
+          },
+        ];
+
+        if (locationName) {
+          sections.push({
+            label: "location",
+            value: locationName,
+          });
+        }
+
+        if (numberOfChildren) {
+          sections.push({
+            label: "number of children",
+            value: numberOfChildren,
+          });
+        }
+
+        if (sections.length) {
+          sections.forEach(({ label, value }) => {
+            const itemNode = document.createElement("div");
+            itemNode.className = "metadata-item";
+            itemNode.innerHTML = `<label>${label}</label><div>${value}</div>`;
+            bodyNode.appendChild(itemNode);
+          });
+        }
+
+        offCanvasNode.innerHTML = "";
+        offCanvasNode.appendChild(offCanvasContentNode);
 
         // Initialize the off canvas overlay
         const bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
@@ -238,24 +285,23 @@
       };
 
       document.addEventListener("click", (evt) => {
-        const instance = bootstrap.Offcanvas.getInstance(offCanvasEl);
+        const instance = bootstrap.Offcanvas.getInstance(offCanvasNode);
 
         if (!instance) {
           return;
         }
-        let targetElement = evt.target; // clicked element
+        let targetNode = evt.target; // clicked element
 
         do {
-          if (targetElement === offCanvasEl) {
+          if (targetNode === offCanvasNode) {
             // This is a click inside. Do nothing, just return.
             return;
           }
 
           // Click on google map image (marker, marker cluster icon, etc)
-          const src =
-            targetElement.getAttribute && targetElement.getAttribute("src");
+          const src = targetNode.getAttribute && targetNode.getAttribute("src");
           if (src === "https://maps.gstatic.com/mapfiles/transparent.png") {
-            const title = targetElement.parentNode.getAttribute("title");
+            const title = targetNode.parentNode.getAttribute("title");
 
             // Click on marker. Do nothing, just return.
             if (title) {
@@ -264,11 +310,11 @@
             // Click on something other than a marker; continue traversing;
           }
           // Go up the DOM
-          targetElement = targetElement.parentNode;
-        } while (targetElement);
+          targetNode = targetNode.parentNode;
+        } while (targetNode);
 
         // This is a click outside.
-        bootstrap.Offcanvas.getInstance(offCanvasEl).hide();
+        bootstrap.Offcanvas.getInstance(offCanvasNode).hide();
       });
 
       const locations = [
@@ -282,6 +328,7 @@
           description:
             "Back in 2012, The Huracan Foundation's first project was based in Sierra Leone and was run in conjunction with the Craig Bellamy Children's Foundation.",
           projectType: "PAST",
+          numberOfChildren: 50,
         },
         {
           location: {
@@ -293,6 +340,7 @@
           description:
             "Following our support for Vikas in 2013, his team went on to form the NGO Just for Kicks, which now works with over 5,000 children each year across India and employs 80 people.",
           projectType: "PAST",
+          numberOfChildren: 15,
         },
         {
           location: {
@@ -304,6 +352,7 @@
           description:
             "Huracan FC Colombia was established by Henry May and Carlos Echeverry and led to the creation of CoSchool, the award winning social enterprise established by Henry that focuses on chidren's social and emotional learning.",
           projectType: "PAST",
+          numberOfChildren: 35,
         },
         {
           location: {
@@ -315,6 +364,7 @@
           description:
             "Dickson's project was run in conjunction with Nakuru Youth Sports Association. The children still wear the Huracan kit they received back in 2013 although many of the original players have gone on to bigger and better things. One of the original members of Huracan FC Kenya is now playing in the Kenya Premier League.",
           projectType: "PAST",
+          numberOfChildren: 50,
         },
         {
           location: {
@@ -326,6 +376,7 @@
           description:
             "Daniel's project focused on reducing teenage pregnancies. Four girls in the team fell pregnant in the first year of the project, but this number fell to zero in the second year thanks to the support they received from Daniel and their focus on playing as part of the team.",
           projectType: "PAST",
+          numberOfChildren: 40,
         },
         {
           location: {
@@ -337,6 +388,7 @@
           description:
             "Thad led a project based in a region of Brazil plagued by drug barons, with a focus of providing a safe space for children where they could play football in their free time.",
           projectType: "PAST",
+          numberOfChildren: 60,
         },
         {
           location: {
@@ -348,6 +400,7 @@
           description:
             "Ingrid led a project in a rural school, three hours away from the nearest city and accessible only via motorbike and on foot. The project worked in partnership with a group of older students in the school, who became coaches of the school's first football team for 10-13 year olds.",
           projectType: "PAST",
+          numberOfChildren: 40,
         },
         {
           location: {
@@ -359,6 +412,7 @@
           description:
             "Diana Paola worked with the children using football to improve their respect for each other and help build resilience.",
           projectType: "PAST",
+          numberOfChildren: 24,
         },
         {
           location: {
@@ -370,6 +424,7 @@
           description:
             "Miggy used football to focus on improving the boys discipline and attitude at his school in Manila.",
           projectType: "PAST",
+          numberOfChildren: 50,
         },
         {
           location: {
@@ -381,6 +436,7 @@
           description:
             "Huracan FC Nepal was based in a very remote village in the Nepalese mountains, three hours by car from the local town and then one hour on foot. The project had a really significant impact on both the girls (who significantly developed their confidence levels and provided real inspiration to each other) and the boys (many of whom took on roles within the team of coach, referee, linesman, event manager) as well as improving school attendance and academic performance.",
           projectType: "PAST",
+          numberOfChildren: 30,
         },
         {
           location: {
@@ -392,6 +448,7 @@
           description:
             "Diana Paola's project had a strong focus on girls. She established a girls' football team that specifically focused on developing life skills alongside the football training; helping with socio-emotional skills; building a sense of team camaraderie and developing leadership skills. After the first term of the project, 90% of the students who were members of the Huracan FC\nMexico project received grades of an average of 85% and above, and 90% of the students had attendance rates of 90% and above.",
           projectType: "PAST",
+          numberOfChildren: 48,
         },
         {
           location: {
@@ -403,6 +460,7 @@
           description:
             "Alfredo established Huracan FC Chile alongside his football academy InterChile, which worked with vulnerable children living in the suburbs of Santiago.",
           projectType: "PAST",
+          numberOfChildren: 120,
         },
         {
           location: {
@@ -414,6 +472,7 @@
           description:
             "Jaime's project was based in a very rural school in San Pedro de Uruba,, where children would walk for up to two hours to attend one of the Huracan training sessions.",
           projectType: "PAST",
+          numberOfChildren: 25,
         },
         {
           location: {
@@ -425,6 +484,7 @@
           description:
             "Sona was using football to help connect three very remote villages in the disputed territory of Nagorno-Karabakh. Sona had a strong passion forhHumanitarian education and was motivating and inspiring the entire community using these values.",
           projectType: "PAST",
+          numberOfChildren: 42,
         },
         {
           location: {
@@ -436,6 +496,7 @@
           description:
             "Deysi's project was in the remote village of San Miguel de Seren in the north of Peru. Teenage drinking was a real problem in the community but during the six months of Deysi's project before COVID took hold, 85% of the students on the team improved their school grades and the number of young teenagers who consumed alcohol regularly fell from 16 to 1.",
           projectType: "PAST",
+          numberOfChildren: 36,
         },
         {
           location: {
@@ -447,6 +508,7 @@
           description:
             "The pitch where Huracan FC Nepal trained was a 45 minute uphill walk from the school, and the children used to complete this walk at 5.30am each day to enable them to train before lessons. See more details here about Mingma's project and some stunning shots of the pitch. ",
           projectType: "PAST",
+          numberOfChildren: 196,
         },
         {
           location: {
@@ -458,6 +520,7 @@
           description:
             "As well as ensuring children attended school more regularly, Vincent aimed to increase the visibility of his more talented children, hoping to ensure these players will be awarded professional training support. This short video gives you a little insight into his work and a sense of the community he's working in. (VIDEO LINK NEEDED)",
           projectType: "PAST",
+          numberOfChildren: 78,
         },
         {
           location: {
@@ -469,6 +532,7 @@
           description:
             "Gaby and Michela ran this project together, focusing on Year 5 girls who lacked a specific focus outside of their school work in this academic year. The girls had low self esteem and low self belief, and this project specifically worked on their teamwork and leadership skills by giving them the responsibility of creating and developing their own football team.",
           projectType: "PAST",
+          numberOfChildren: 13,
         },
         {
           location: {
@@ -480,6 +544,7 @@
           description:
             "Yolkey's project was based in a very remote town in the west of Nepal where gender inequality was a real concern and she believed strongly in giving the girls access to play sport, hoping to build their confidence which in turn would encourage them to attend school more regularly",
           projectType: "PAST",
+          numberOfChildren: 40,
         },
         {
           location: {
@@ -491,6 +556,7 @@
           description:
             "Ulises' project was based on the outskirts of Mexico City in an area suffering high levels of violence. His project aimed to support the children both academically and to develop their socio-emotional skills. Given the additional issues raised by the lockdown, Ulises also focused on using football to help the children's mental health.",
           projectType: "ONGOING",
+          numberOfChildren: 92,
         },
         {
           location: {
@@ -502,6 +568,7 @@
           description:
             "Charles worked across three schools, using football to help reduce the high levels of both school dropouts and teenage pregnancy and marriage. He was successful in helping a number of the girls gain scholarships to high school, which were awarded based on their football skills, and hence ensured these girls continued their education",
           projectType: "ONGOING",
+          numberOfChildren: 242,
         },
         {
           location: {
@@ -513,6 +580,7 @@
           description:
             "The school dropout rate at Kenneth's school in the remote village of Muwangi was 70% (against a national average of 43%). Despite the lockdowns, Kenneth was determined to use football to engage both the school children and the wider community in his Huracan project. There was a clear change in the perception of the school thanks to his engagement with the parents and their understanding of the need for both boys and girls to attend school regularly",
           projectType: "ONGOING",
+          numberOfChildren: null,
         },
         {
           location: {
@@ -524,6 +592,7 @@
           description:
             "Ross's project was based at a school in West London where the majority of the children were from very challenging backgrounds. Despite being challenged by the disruptions of the lockdowns, Ross created a real enthusiasm amongst the children and was able to broaden his project across year groups, as well as demonstrating a good increase in the children's academic performance",
           projectType: "ONGOING",
+          numberOfChildren: null,
         },
         {
           location: {
@@ -535,6 +604,7 @@
           description:
             "Tenzin's project was based in the remote community of Jhamtse Gatsal Children's Community. Tenzin felt passionate about using football to help these children who all came from incredibly adverse backgrounds and benefited from football as part of the wider work of the commity school which was based on helping to give these children a better start in life",
           projectType: "NEW",
+          numberOfChildren: null,
         },
         {
           location: {
@@ -546,6 +616,7 @@
           description:
             "The three key objectives of Andrew's project were to reduce school dropouts, reduce teenage pregnancies and to help the children with their mental health which given the period of school disruption was a key driver for his work",
           projectType: "NEW",
+          numberOfChildren: null,
         },
         {
           location: {
@@ -557,6 +628,7 @@
           description:
             "Denise's project focused solely on girls, ensuring they are encouraged to complete their Primary School education. She had a strong focus on engaging the parents and ensuring they both understood the importance of their daughter's education as well as being proud of their position on the football team",
           projectType: "NEW",
+          numberOfChildren: null,
         },
         {
           location: {
@@ -569,6 +641,7 @@
           description:
             "Laker saw the need to reduce school dropouts as her biggest challenge. She had witnessed the boys choosing paid manual labour as an alternative to school and needed to find a way to encourage and inspire them to attend school regularly,, as well as giving the girls the motivation to attend",
           projectType: "NEW",
+          numberOfChildren: null,
         },
       ];
 
@@ -583,6 +656,7 @@
             locationName,
             description,
             projectType,
+            numberOfChildren,
           }) => {
             const { enabled, markerType } = projectTypeConfig[projectType];
 
@@ -600,13 +674,15 @@
               locationName,
               description,
               markerType,
+              numberOfChildren:
+                projectType === "PAST" ? numberOfChildren : null,
             });
 
             bounds.extend(location);
 
             google.maps.event.addListener(marker, "click", () => {
-              const offCanvasWidth = offCanvasEl
-                ? offCanvasEl.offsetWidth
+              const offCanvasWidth = offCanvasNode
+                ? offCanvasNode.offsetWidth
                 : null;
 
               // Center and then offset by half of overlay width
@@ -656,7 +732,7 @@
           },
         });
 
-        const legend = document.getElementById("legend");
+        const legendNode = document.getElementById("legend");
         Object.keys(markerConfig).forEach((markerType) => {
           const { label, fillColor } = markerConfig[markerType] || {};
 
@@ -665,10 +741,10 @@
           div.className = "legend-item";
 
           div.innerHTML = `<img class="legend-item-icon" src="${url}"/>${label}`;
-          legend.appendChild(div);
+          legendNode.appendChild(div);
         });
 
-        map.controls[google.maps.ControlPosition.TOP_LEFT].push(legend);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(legendNode);
         map.fitBounds(bounds);
       }
     </script>
