@@ -12,7 +12,7 @@ if (!googleDriveFileId) {
   exit(1);
 }
 
-const OUTPUT_PATH = "./data/locations.json";
+const OUTPUT_PATH = "../_data/locations.json";
 
 (async () => {
   try {

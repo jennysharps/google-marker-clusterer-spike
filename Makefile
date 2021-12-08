@@ -1,11 +1,11 @@
 .phony: default
 default:
-	npm install
+	cd build-tools && make
 
 .phony: local
 local:
-	npm run serve
+	bundle exec jekyll serve --baseurl=""
 
 .phony: refresh-data
 refresh-data:
-	node ./cli/updateLocations
+	cd build-tools && make refresh-data
