@@ -7,7 +7,8 @@
     "projectName": "Huracan FC Sierra Leone",
     "locationName": "Freetown?",
     "description": "Back in 2012, The Huracan Foundation's first project was based in Sierra Leone and was run in conjunction with the Craig Bellamy Children's Foundation.",
-    "projectType": "PAST"
+    "projectType": "PAST",
+    "numberOfChildren": 50
   },
   {
     "location": {
@@ -17,7 +18,8 @@
     "projectName": "Huracan FC India",
     "locationName": "Pune",
     "description": "Following our support for Vikas in 2013, his team went on to form the NGO Just for Kicks, which now works with over 5,000 children each year across India and employs 80 people.",
-    "projectType": "PAST"
+    "projectType": "PAST",
+    "numberOfChildren": 15
   },
   {
     "location": {
@@ -27,7 +29,8 @@
     "projectName": "Hurcan FC Colombia (1)",
     "locationName": "Bogota",
     "description": "Huracan FC Colombia was established by Henry May and Carlos Echeverry and led to the creation of CoSchool, the award winning social enterprise established by Henry that focuses on chidren's social and emotional learning.",
-    "projectType": "PAST"
+    "projectType": "PAST",
+    "numberOfChildren": 35
   },
   {
     "location": {
@@ -37,7 +40,8 @@
     "projectName": "Huracan FC Kenya",
     "locationName": "Nakuru",
     "description": "Dickson's project was run in conjunction with Nakuru Youth Sports Association. The children still wear the Huracan kit they received back in 2013 although many of the original players have gone on to bigger and better things. One of the original members of Huracan FC Kenya is now playing in the Kenya Premier League.",
-    "projectType": "PAST"
+    "projectType": "PAST",
+    "numberOfChildren": 50
   },
   {
     "location": {
@@ -47,7 +51,8 @@
     "projectName": "Huracan FC Uraba (2)",
     "locationName": "Uraba",
     "description": "Daniel's project focused on reducing teenage pregnancies. Four girls in the team fell pregnant in the first year of the project, but this number fell to zero in the second year thanks to the support they received from Daniel and their focus on playing as part of the team.",
-    "projectType": "PAST"
+    "projectType": "PAST",
+    "numberOfChildren": 40
   },
   {
     "location": {
@@ -57,7 +62,8 @@
     "projectName": "Huracan FC Brasil",
     "locationName": "Curitiba",
     "description": "Thad led a project based in a region of Brazil plagued by drug barons, with a focus of providing a safe space for children where they could play football in their free time.",
-    "projectType": "PAST"
+    "projectType": "PAST",
+    "numberOfChildren": 60
   },
   {
     "location": {
@@ -67,7 +73,8 @@
     "projectName": "Huracan FC San Pedro (3)",
     "locationName": "San Pedro",
     "description": "Ingrid led a project in a rural school, three hours away from the nearest city and accessible only via motorbike and on foot. The project worked in partnership with a group of older students in the school, who became coaches of the school's first football team for 10-13 year olds.",
-    "projectType": "PAST"
+    "projectType": "PAST",
+    "numberOfChildren": 40
   },
   {
     "location": {
@@ -77,7 +84,8 @@
     "projectName": "Huracan FC Carepa (4)",
     "locationName": "Carepa, Antioquia",
     "description": "Diana Paola worked with the children using football to improve their respect for each other and help build resilience.",
-    "projectType": "PAST"
+    "projectType": "PAST",
+    "numberOfChildren": 24
   },
   {
     "location": {
@@ -87,7 +95,8 @@
     "projectName": "Huracan FC The Philippines",
     "locationName": "Manila",
     "description": "Miggy used football to focus on improving the boys discipline and attitude at his school in Manila.",
-    "projectType": "PAST"
+    "projectType": "PAST",
+    "numberOfChildren": 50
   },
   {
     "location": {
@@ -97,7 +106,8 @@
     "projectName": "Huracan FC Nepal (1)",
     "locationName": "Simle, Lalitpur",
     "description": "Huracan FC Nepal was based in a very remote village in the Nepalese mountains, three hours by car from the local town and then one hour on foot. The project had a really significant impact on both the girls (who significantly developed their confidence levels and provided real inspiration to each other) and the boys (many of whom took on roles within the team of coach, referee, linesman, event manager) as well as improving school attendance and academic performance.",
-    "projectType": "PAST"
+    "projectType": "PAST",
+    "numberOfChildren": 30
   },
   {
     "location": {
@@ -107,7 +117,8 @@
     "projectName": "Huracan FC Mexico",
     "locationName": "Juárez, Nuevo León",
     "description": "Diana Paola's project had a strong focus on girls. She established a girls' football team that specifically focused on developing life skills alongside the football training; helping with socio-emotional skills; building a sense of team camaraderie and developing leadership skills. After the first term of the project, 90% of the students who were members of the Huracan FC\nMexico project received grades of an average of 85% and above, and 90% of the students had attendance rates of 90% and above.",
-    "projectType": "PAST"
+    "projectType": "PAST",
+    "numberOfChildren": 48
   },
   {
     "location": {
@@ -117,7 +128,8 @@
     "projectName": "Huracan FC Chile",
     "locationName": "Santiago",
     "description": "Alfredo established Huracan FC Chile alongside his football academy InterChile, which worked with vulnerable children living in the suburbs of Santiago.",
-    "projectType": "PAST"
+    "projectType": "PAST",
+    "numberOfChildren": 120
   },
   {
     "location": {
@@ -127,7 +139,8 @@
     "projectName": "Huracan FC San Pedro (3)",
     "locationName": "San Pedro de Uraba",
     "description": "Jaime's project was based in a very rural school in San Pedro de Uruba,, where children would walk for up to two hours to attend one of the Huracan training sessions.",
-    "projectType": "PAST"
+    "projectType": "PAST",
+    "numberOfChildren": 25
   },
   {
     "location": {
@@ -137,7 +150,8 @@
     "projectName": "Huracan FC Armenia",
     "locationName": "Hin Shen Village, Shoushi Region, Nagorno-Karabakh",
     "description": "Sona was using football to help connect three very remote villages in the disputed territory of Nagorno-Karabakh. Sona had a strong passion forhHumanitarian education and was motivating and inspiring the entire community using these values.",
-    "projectType": "PAST"
+    "projectType": "PAST",
+    "numberOfChildren": 42
   },
   {
     "location": {
@@ -147,7 +161,8 @@
     "projectName": "Huracan FC Peru",
     "locationName": "Piura",
     "description": "Deysi's project was in the remote village of San Miguel de Seren in the north of Peru. Teenage drinking was a real problem in the community but during the six months of Deysi's project before COVID took hold, 85% of the students on the team improved their school grades and the number of young teenagers who consumed alcohol regularly fell from 16 to 1.",
-    "projectType": "PAST"
+    "projectType": "PAST",
+    "numberOfChildren": 36
   },
   {
     "location": {
@@ -157,7 +172,8 @@
     "projectName": "Huracan FC Nepal (2)",
     "locationName": "Sindhupalchok",
     "description": "The pitch where Huracan FC Nepal trained was a 45 minute uphill walk from the school, and the children used to complete this walk at 5.30am each day to enable them to train before lessons. See more details here about Mingma's project and some stunning shots of the pitch. ",
-    "projectType": "PAST"
+    "projectType": "PAST",
+    "numberOfChildren": 196
   },
   {
     "location": {
@@ -167,7 +183,8 @@
     "projectName": "Huracan FC Ghana",
     "locationName": "Tamale",
     "description": "As well as ensuring children attended school more regularly, Vincent aimed to increase the visibility of his more talented children, hoping to ensure these players will be awarded professional training support. This short video gives you a little insight into his work and a sense of the community he's working in. (VIDEO LINK NEEDED)",
-    "projectType": "PAST"
+    "projectType": "PAST",
+    "numberOfChildren": 78
   },
   {
     "location": {
@@ -177,7 +194,8 @@
     "projectName": "Huracan FC St Frances De Sales",
     "locationName": "Haringey, London",
     "description": "Gaby and Michela ran this project together, focusing on Year 5 girls who lacked a specific focus outside of their school work in this academic year. The girls had low self esteem and low self belief, and this project specifically worked on their teamwork and leadership skills by giving them the responsibility of creating and developing their own football team.",
-    "projectType": "PAST"
+    "projectType": "PAST",
+    "numberOfChildren": 13
   },
   {
     "location": {
@@ -187,7 +205,8 @@
     "projectName": "Huracan FC Nepal",
     "locationName": "Tulsipur Dang",
     "description": "Yolkey's project was based in a very remote town in the west of Nepal where gender inequality was a real concern and she believed strongly in giving the girls access to play sport, hoping to build their confidence which in turn would encourage them to attend school more regularly",
-    "projectType": "PAST"
+    "projectType": "PAST",
+    "numberOfChildren": 40
   },
   {
     "location": {
@@ -197,7 +216,8 @@
     "projectName": "Huracan FC CCSK Mexico",
     "locationName": "Ecatepec de Morelos, Mexico City",
     "description": "Ulises' project was based on the outskirts of Mexico City in an area suffering high levels of violence. His project aimed to support the children both academically and to develop their socio-emotional skills. Given the additional issues raised by the lockdown, Ulises also focused on using football to help the children's mental health.",
-    "projectType": "ONGOING"
+    "projectType": "ONGOING",
+    "numberOfChildren": 92
   },
   {
     "location": {
@@ -207,7 +227,8 @@
     "projectName": "Huracan FC Teso Uganda",
     "locationName": "Teso",
     "description": "Charles worked across three schools, using football to help reduce the high levels of both school dropouts and teenage pregnancy and marriage. He was successful in helping a number of the girls gain scholarships to high school, which were awarded based on their football skills, and hence ensured these girls continued their education",
-    "projectType": "ONGOING"
+    "projectType": "ONGOING",
+    "numberOfChildren": 242
   },
   {
     "location": {
@@ -217,7 +238,8 @@
     "projectName": "Huracan FC Muwangi Uganda",
     "locationName": "Muwangi",
     "description": "The school dropout rate at Kenneth's school in the remote village of Muwangi was 70% (against a national average of 43%). Despite the lockdowns, Kenneth was determined to use football to engage both the school children and the wider community in his Huracan project. There was a clear change in the perception of the school thanks to his engagement with the parents and their understanding of the need for both boys and girls to attend school regularly",
-    "projectType": "ONGOING"
+    "projectType": "ONGOING",
+    "numberOfChildren": null
   },
   {
     "location": {
@@ -227,7 +249,8 @@
     "projectName": "Hurcan FC Northala",
     "locationName": "Northolt, W London",
     "description": "Ross's project was based at a school in West London where the majority of the children were from very challenging backgrounds. Despite being challenged by the disruptions of the lockdowns, Ross created a real enthusiasm amongst the children and was able to broaden his project across year groups, as well as demonstrating a good increase in the children's academic performance",
-    "projectType": "ONGOING"
+    "projectType": "ONGOING",
+    "numberOfChildren": null
   },
   {
     "location": {
@@ -237,7 +260,8 @@
     "projectName": "Huracan FC Jhamtse India",
     "locationName": "Tawang, Arunachal Pradesh",
     "description": "Tenzin's project was based in the remote community of Jhamtse Gatsal Children's Community. Tenzin felt passionate about using football to help these children who all came from incredibly adverse backgrounds and benefited from football as part of the wider work of the commity school which was based on helping to give these children a better start in life",
-    "projectType": "NEW"
+    "projectType": "NEW",
+    "numberOfChildren": null
   },
   {
     "location": {
@@ -247,7 +271,8 @@
     "projectName": "Huracan FC Isikiro Uganda",
     "locationName": "Mayuge District",
     "description": "The three key objectives of Andrew's project were to reduce school dropouts, reduce teenage pregnancies and to help the children with their mental health which given the period of school disruption was a key driver for his work",
-    "projectType": "NEW"
+    "projectType": "NEW",
+    "numberOfChildren": null
   },
   {
     "location": {
@@ -257,7 +282,8 @@
     "projectName": "Huracan FC Kanyabwina",
     "locationName": "Mayuge District",
     "description": "Denise's project focused solely on girls, ensuring they are encouraged to complete their Primary School education. She had a strong focus on engaging the parents and ensuring they both understood the importance of their daughter's education as well as being proud of their position on the football team",
-    "projectType": "NEW"
+    "projectType": "NEW",
+    "numberOfChildren": null
   },
   {
     "location": {
@@ -267,6 +293,7 @@
     "projectName": "Huracan FC Bwiwula Uganda",
     "locationName": "Bwiwula Village Imanyiro Sub-county Bunya West County Mayuge District,",
     "description": "Laker saw the need to reduce school dropouts as her biggest challenge. She had witnessed the boys choosing paid manual labour as an alternative to school and needed to find a way to encourage and inspire them to attend school regularly,, as well as giving the girls the motivation to attend",
-    "projectType": "NEW"
+    "projectType": "NEW",
+    "numberOfChildren": null
   }
 ]
