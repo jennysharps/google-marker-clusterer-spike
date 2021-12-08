@@ -118,9 +118,9 @@
               <circle cx="120" cy="120" opacity=".2" r="110" />
             </svg>`);
 
-      const markerSVG = (projectType, selected) => {
-        const { icon: { fillColor, fillOpacity, strokeOpacity } = {} } =
-          projectTypeProps[projectType] || {};
+      const markerSVG = (markerType, selected) => {
+        const { fillColor, fillOpacity, strokeOpacity } =
+          markerConfig[markerType];
 
         return window.btoa(`
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34">
@@ -144,34 +144,45 @@
           </svg>`);
       };
 
-      const projectTypeProps = {
+      const markerTypes = {
+        ONGOING_PROJECT: "ONGOING_PROJECT",
+        PAST_PROJECT: "PAST_PROJECT",
+      };
+      const markerConfig = {
+        [markerTypes.ONGOING_PROJECT]: {
+          label: "Ongoing Projects",
+          fillColor: "#ed1c24",
+        },
+        [markerTypes.PAST_PROJECT]: {
+          label: "Past Projects",
+          fillColor: "#006A6E",
+        },
+      };
+      const projectTypeConfig = {
         NEW: {
-          label: "New Project",
-          enabled: false,
-          icon: {},
+          enabled: true,
+          markerType: markerTypes.ONGOING_PROJECT,
         },
         PAST: {
-          label: "Past Projects",
           enabled: true,
-          icon: { fillColor: "#006A6E" },
+          markerType: markerTypes.PAST_PROJECT,
         },
         ONGOING: {
-          label: "Ongoing Projects",
           enabled: true,
-          icon: { fillColor: "#ed1c24" },
+          markerType: markerTypes.ONGOING_PROJECT,
         },
       };
 
-      const iconProps = (projectType) => {
+      const iconProps = (markerType) => {
         return {
-          url: `data:image/svg+xml;base64,${markerSVG(projectType, false)}`,
+          url: `data:image/svg+xml;base64,${markerSVG(markerType, false)}`,
           scaledSize: new google.maps.Size(52, 52),
         };
       };
 
-      const selectedIconProps = (projectType) => {
+      const selectedIconProps = (markerType) => {
         return {
-          url: `data:image/svg+xml;base64,${markerSVG(projectType, true)}`,
+          url: `data:image/svg+xml;base64,${markerSVG(markerType, true)}`,
           scaledSize: new google.maps.Size(52, 52),
         };
       };
@@ -190,7 +201,7 @@
 
         cancelAnimation();
 
-        marker.setIcon(iconProps(marker.projectType));
+        marker.setIcon(iconProps(marker.markerType));
         marker.setZIndex(undefined);
       };
 
@@ -200,7 +211,7 @@
 
       const showDetailsOverlay = (marker) => {
         cancelAnimation();
-        const { projectName, locationName, description, projectType } = marker;
+        const { projectName, locationName, description, markerType } = marker;
         unselectMarker(visibleMarker);
         visibleMarker = marker;
 
@@ -223,7 +234,7 @@
         }, 750);
 
         marker.setZIndex(Number(google.maps.Marker.MAX_ZINDEX) + 1000);
-        marker.setIcon(selectedIconProps(projectType));
+        marker.setIcon(selectedIconProps(markerType));
       };
 
       document.addEventListener("click", (evt) => {
@@ -573,21 +584,22 @@
             description,
             projectType,
           }) => {
-            const { enabled } = projectTypeProps[projectType];
+            const { enabled, markerType } = projectTypeConfig[projectType];
+
             if (!enabled) {
               return;
             }
 
             const marker = new google.maps.Marker({
               position: location,
-              icon: iconProps(projectType),
+              icon: iconProps(markerType),
               title: locationName || projectName,
               animation: google.maps.Animation.DROP,
               optimized: false,
               projectName,
               locationName,
               description,
-              projectType,
+              markerType,
             });
 
             bounds.extend(location);
@@ -645,18 +657,10 @@
         });
 
         const legend = document.getElementById("legend");
-        Object.keys(projectTypeProps).forEach((projectType) => {
-          const {
-            label,
-            enabled,
-            icon: { fillColor } = {},
-          } = projectTypeProps[projectType] || {};
+        Object.keys(markerConfig).forEach((markerType) => {
+          const { label, fillColor } = markerConfig[markerType] || {};
 
-          if (!enabled) {
-            return;
-          }
-
-          const { url } = iconProps(projectType, false);
+          const { url } = iconProps(markerType, false);
           const div = document.createElement("div");
           div.className = "legend-item";
 
