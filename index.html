@@ -102,12 +102,11 @@
       }
       .legend-item {
         display: flex;
-        margin: 5px 0;
         align-items: center;
       }
       .legend-item-icon {
-        width: 28px;
-        margin: -2px -2px -2px -5px;
+        width: 40px;
+        margin: -6px -6px -6px -8px;
       }
     </style>
     <script
@@ -135,7 +134,7 @@
           markerConfig[markerType] || {};
 
         return window.btoa(`
-          <svg width="70" height="70" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
+          <svg width="65" height="65" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
             <defs>
               <style type="text/css"><![CDATA[
                 .shadow {
@@ -152,7 +151,7 @@
             <svg x="5" y="6.25" viewBox="0 0 36 36">
               <path class="shadow" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="${fillColor}" fill-opacity="1" stroke="white" stroke-width="0.5" />
             </svg>
-            <circle fill="white" cx="17" cy="15.25" opacity="1" stroke="${fillColor}" stroke-width="1" r="2.5" />
+            <circle fill="white" cx="17" cy="15.25" opacity="1" stroke="${fillColor}" stroke-width="0.5" r="2.75" />
           </svg>`);
       };
 
@@ -187,8 +186,8 @@
 
       const getIconProps = (options) => ({
         url: `data:image/svg+xml;base64,${markerSVG(options)}`,
-        scaledSize: new google.maps.Size(70, 70),
-        anchor: new google.maps.Point(30, 50),
+        scaledSize: new google.maps.Size(65, 65),
+        anchor: new google.maps.Point(25, 45),
       });
 
       const cancelAnimation = () => {
