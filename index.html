@@ -130,12 +130,12 @@
               <circle cx="120" cy="120" opacity=".2" r="110" />
             </svg>`);
 
-      const markerSVG = (markerType, selected) => {
+      const markerSVG = ({ markerType, selected } = {}) => {
         const { fillColor, fillOpacity, strokeOpacity } =
-          markerConfig[markerType];
+          markerConfig[markerType] || {};
 
         return window.btoa(`
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34">
+          <svg width="70" height="70" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
             <defs>
               <style type="text/css"><![CDATA[
                 .shadow {
@@ -146,13 +146,13 @@
             </defs>
             ${
               selected
-                ? `<circle class="shadow" fill="white" cx="16" cy="17" opacity=".7" r="15" />`
+                ? `<circle class="shadow" fill="white" cx="17.5" cy="18" opacity=".75" r="15" />`
                 : ""
             }
-            <svg x="4" y="5">
+            <svg x="5" y="6.25" viewBox="0 0 36 36">
               <path class="shadow" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="${fillColor}" fill-opacity="1" stroke="white" stroke-width="0.5" />
             </svg>
-            <circle fill="white" cx="16" cy="14" opacity="1" r="2.5" />
+            <circle fill="white" cx="17" cy="15.25" opacity="1" stroke="${fillColor}" stroke-width="1" r="2.5" />
           </svg>`);
       };
 
@@ -185,19 +185,11 @@
         },
       };
 
-      const iconProps = (markerType) => {
-        return {
-          url: `data:image/svg+xml;base64,${markerSVG(markerType, false)}`,
-          scaledSize: new google.maps.Size(52, 52),
-        };
-      };
-
-      const selectedIconProps = (markerType) => {
-        return {
-          url: `data:image/svg+xml;base64,${markerSVG(markerType, true)}`,
-          scaledSize: new google.maps.Size(52, 52),
-        };
-      };
+      const getIconProps = (options) => ({
+        url: `data:image/svg+xml;base64,${markerSVG(options)}`,
+        scaledSize: new google.maps.Size(70, 70),
+        anchor: new google.maps.Point(30, 50),
+      });
 
       const cancelAnimation = () => {
         if (animationTimeout) {
@@ -211,9 +203,10 @@
           return;
         }
 
-        cancelAnimation();
+        const { markerType } = marker;
 
-        marker.setIcon(iconProps(marker.markerType));
+        cancelAnimation();
+        marker.setIcon(getIconProps({ markerType }));
         marker.setZIndex(undefined);
       };
 
@@ -281,7 +274,7 @@
         }, 750);
 
         marker.setZIndex(Number(google.maps.Marker.MAX_ZINDEX) + 1000);
-        marker.setIcon(selectedIconProps(markerType));
+        marker.setIcon(getIconProps({ markerType, selected: true }));
       };
 
       document.addEventListener("click", (evt) => {
@@ -488,8 +481,8 @@
         },
         {
           location: {
-            lat: -5.1783,
-            lng: -80.6549,
+            lat: -4.9309065,
+            lng: -80.3423171,
           },
           projectName: "Huracan FC Peru",
           locationName: "Piura",
@@ -663,10 +656,9 @@
             if (!enabled) {
               return;
             }
-
             const marker = new google.maps.Marker({
               position: location,
-              icon: iconProps(markerType),
+              icon: getIconProps({ markerType }),
               title: locationName || projectName,
               animation: google.maps.Animation.DROP,
               optimized: false,
@@ -736,7 +728,7 @@
         Object.keys(markerConfig).forEach((markerType) => {
           const { label, fillColor } = markerConfig[markerType] || {};
 
-          const { url } = iconProps(markerType, false);
+          const { url } = getIconProps({ markerType });
           const div = document.createElement("div");
           div.className = "legend-item";
 
